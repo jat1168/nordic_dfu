@@ -36,7 +36,6 @@ class NordicDfuPlugin : FlutterPlugin, MethodCallHandler {
         mContext = binding.applicationContext
         channel = MethodChannel(binding.binaryMessenger, "dev.steenbakker.nordic_dfu/method")
         channel!!.setMethodCallHandler(this)
-        DfuServiceListenerHelper.registerProgressListener(binding.applicationContext, mDfuProgressListener)
     }
 
     override fun onDetachedFromEngine(binding: FlutterPluginBinding) {
@@ -45,6 +44,7 @@ class NordicDfuPlugin : FlutterPlugin, MethodCallHandler {
     }
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
+        DfuServiceListenerHelper.registerProgressListener(mContext!!, mDfuProgressListener)
         if (call.method == "startDfu") {
             val address = call.argument<String>("address")
             val name = call.argument<String>("name")
